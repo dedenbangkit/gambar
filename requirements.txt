@@ -1,0 +1,5 @@
+docopt==0.6.2
+pyperclip==1.6.5
+pytesseract==0.2.6
+wget==3.2
+python-docx==0.8.10
