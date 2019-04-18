@@ -6,7 +6,6 @@ An Image Scrapper Tools written in Python.
 ## Requirements
 
 - Python 3.6 or above.
-- pip
 
 ## Installation
 ```bash
