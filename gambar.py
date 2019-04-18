@@ -4,6 +4,8 @@ Usage:
   gambar <url>
   gambar <url> [-slcw]
   gambar <url> [-slgw]
+  gambar <url> [-slcwo] <output>
+  gambar <url> [-slgwo] <output>
   gambar -f <source> [-slgw]
   gambar -f <filename> [-slcw]
   gambar --version
@@ -16,6 +18,7 @@ Options:
   -l --line         Force Paragraph to Line.
   -c --clipboard    Copy to Clipboard.
   -g --noprint      Don't print output, just copy to Clipboard.
+  -o --output       Output Filename.
   -h --help         Show this screen.
   --version         Show version.
 """
@@ -33,13 +36,16 @@ def processCommand(arg):
     clip = arg['--clipboard']
     pr = arg['--noprint']
     msword = arg['--msword']
+    fout = arg['<output>']
     if pr == True:
         clip == True
     if source == None:
         import urllib.request
         opener = urllib.request.URLopener()
         opener.addheader('User-Agent', 'whatever')
-        output = url.split("/")[-1]
+        output = url.split('/')[-1]
+        if fout is not None:
+           output = fout + '.' + output.split('.')[-1]
         filename, headers = opener.retrieve(url, output)
         images = filename
     else:
