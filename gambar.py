@@ -4,7 +4,8 @@ Usage:
   gambar <url>
   gambar <url> [-slcw]
   gambar <url> [-slgw]
-  gambar -f <filename> [-slgw]
+  gambar -f <source> [-slgw]
+  gambar -f <filename> [-slcw]
   gambar --version
   gambar (-h | --help)
 
@@ -20,11 +21,13 @@ Options:
 """
 from docopt import docopt
 
+
 def processCommand(arg):
     import pytesseract as pys
     import pyperclip
+    import os
     url = arg['<url>']
-    filename = arg['<filename>']
+    source = arg['<source>']
     save = arg['--keep']
     line = arg['--line']
     clip = arg['--clipboard']
@@ -32,13 +35,15 @@ def processCommand(arg):
     msword = arg['--msword']
     if pr == True:
         clip == True
-    if filename == None:
-        import wget
-        print('\n')
-        images = wget.download(url)
-    else:
+    if source == None:
+        import urllib.request
+        opener = urllib.request.URLopener()
+        opener.addheader('User-Agent', 'whatever')
+        output = url.split("/")[-1]
+        filename, headers = opener.retrieve(url, output)
         images = filename
-    import os
+    else:
+        images = source
     results = pys.image_to_string(str(images))
     fname = os.path.splitext(os.path.basename(images))[0]
     # Print Results
@@ -79,7 +84,7 @@ def processCommand(arg):
         pyperclip.copy(results)
         print('- Copied to Clipboard!')
     # Print Source Image
-    if filename == None:
+    if source == None:
         print('- Source Image: '+url)
     else:
         print('- Source Image: '+images)
